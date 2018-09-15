@@ -9,3 +9,24 @@ services:
       - "80:80"
     volumes:
         - ./www:/var/www/html
+
+  db:
+    build:
+      context: ./container/db
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+        - "3306:3306"
+    volumes:
+      - ./db-files:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8888:8080
