@@ -1,0 +1,12 @@
+# Ignore operating system generated files.
+.DS_Store
+
+# Ingore environment file.
+.env
+
+# Ignore database files.
+/db-files/*
+!/db-files/.gitkeep
+
+/www/*
+!/www/.gitkeep
