@@ -15,6 +15,7 @@ COPY conf/httpd-vhosts.conf /etc/httpd/conf.d/
 
 RUN yum-config-manager --enable remi-php72
 RUN yum install php-fpm -y
+RUN yum install php-mysql php-pdo php-gd php-mbstring php-opcache php-xml -y
 RUN mkdir /var/run/php-fpm
 RUN chmod 755 /var/run/php-fpm
 
