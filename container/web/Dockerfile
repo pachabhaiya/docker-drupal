@@ -18,6 +18,14 @@ RUN yum install php-fpm -y
 RUN mkdir /var/run/php-fpm
 RUN chmod 755 /var/run/php-fpm
 
+RUN cp /etc/httpd/conf.modules.d/00-mpm.conf /etc/httpd/conf.modules.d/00-mpm.conf.original
+COPY conf/00-mpm.conf /etc/httpd/conf.modules.d/
+
+COPY conf/php.conf /etc/httpd/conf.d/
+
+RUN cp /etc/php-fpm.d/www.conf /etc/php-fpm.d/www.conf.original
+COPY conf/www.conf /etc/php-fpm.d/
+
 RUN yum install supervisor -y
 COPY conf/supervisord.conf /etc/
 
