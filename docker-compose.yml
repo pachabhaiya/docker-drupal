@@ -5,10 +5,12 @@ services:
     build:
       context: ./container/web
       dockerfile: Dockerfile
+      args:
+        - DOCROOT_FOLDER=${DOCROOT_FOLDER}
     ports:
       - "80:80"
     volumes:
-        - ./www:/var/www/html
+      - ./www:/var/www/html
 
   db:
     build:
