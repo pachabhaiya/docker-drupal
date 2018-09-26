@@ -7,10 +7,16 @@ services:
       dockerfile: Dockerfile
       args:
         - DOCROOT_FOLDER=${DOCROOT_FOLDER}
+    restart: always
     ports:
       - "80:80"
     volumes:
       - ./www:/var/www/html
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
   db:
     build:

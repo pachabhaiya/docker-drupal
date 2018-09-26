@@ -5,6 +5,7 @@ LABEL maintainer.name="Chhabi Pachabhaiya" \
       description="PHP-FPM/Apache"
 
 ARG DOCROOT_FOLDER
+ENV DOCROOT_FOLDER=${DOCROOT_FOLDER}
 
 RUN yum update -y
 RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -y
@@ -25,6 +26,15 @@ RUN yum install php-mysql php-pdo php-gd php-mbstring php-opcache php-xml -y
 RUN mkdir /var/run/php-fpm
 RUN chmod 755 /var/run/php-fpm
 
+# drush does not work if mariadb is not installed in this container.
+RUN yum install mariadb -y
+
+RUN yum install drush git wget -y
+
+RUN wget -P /tmp https://github.com/drush-ops/drush/releases/download/8.1.16/drush.phar
+RUN chmod a+x /tmp/drush.phar
+RUN mv /tmp/drush.phar /usr/local/bin/drush
+
 RUN cp /etc/httpd/conf.modules.d/00-mpm.conf /etc/httpd/conf.modules.d/00-mpm.conf.original
 COPY conf/00-mpm.conf /etc/httpd/conf.modules.d/
 
@@ -36,7 +46,7 @@ COPY conf/www.conf /etc/php-fpm.d/
 RUN yum install supervisor -y
 COPY conf/supervisord.conf /etc/
 
-WORKDIR /var/www/html
+WORKDIR ${DOCROOT_FOLDER}
 
 EXPOSE 80
 
