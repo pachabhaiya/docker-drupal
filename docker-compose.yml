@@ -9,7 +9,7 @@ services:
         - DOCROOT_FOLDER=${DOCROOT_FOLDER}
     restart: always
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
       - ./www:/var/www/html
     environment:
@@ -38,3 +38,14 @@ services:
     restart: always
     ports:
       - 8888:8080
+
+  varnish:
+    build:
+      context: ./container/varnish
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./container/varnish/conf/varnish.params:/etc/varnish/varnish.params
+      - ./container/varnish/conf/default.vcl:/etc/varnish/default.vcl
