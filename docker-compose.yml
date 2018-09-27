@@ -12,11 +12,6 @@ services:
       - "8080:80"
     volumes:
       - ./www:/var/www/html
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
   db:
     build:
@@ -27,6 +22,7 @@ services:
         - "3306:3306"
     volumes:
       - ./db-files:/var/lib/mysql
+      - ./db-dump:/tmp
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
