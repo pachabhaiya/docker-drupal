@@ -1,4 +1,8 @@
 FROM centos:7
+LABEL maintainer.name="Chhabi Pachabhaiya" \
+      maintainer.email="chhabi@pachabhaiya.com" \
+      version="1.0" \
+      description="Varnish 4"
 
 # Update all packages
 RUN yum update -y
