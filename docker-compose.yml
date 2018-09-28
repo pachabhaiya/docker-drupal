@@ -12,6 +12,7 @@ services:
       - "8080:80"
     volumes:
       - ./www:/var/www/html
+      - ./container/web/conf/php.ini:/etc/php.ini
 
   db:
     build:

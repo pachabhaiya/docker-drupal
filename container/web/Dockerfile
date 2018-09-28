@@ -44,9 +44,8 @@ COPY conf/www.conf /etc/php-fpm.d/
 
 # Install additional packages
 # Drush does not work if database server is not installed in web container
-RUN yum install mariadb git wget -y
+RUN yum install mariadb drush git wget -y
 
-# Install drush
 RUN wget -P /tmp https://github.com/drush-ops/drush/releases/download/8.1.16/drush.phar
 RUN chmod a+x /tmp/drush.phar
 RUN mv /tmp/drush.phar /usr/local/bin/drush
