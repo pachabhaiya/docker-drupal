@@ -21,6 +21,11 @@ RUN yum install httpd -y
 COPY conf/httpd.conf /etc/httpd/conf/
 COPY conf/httpd-vhosts.conf.template /etc/httpd/conf.d/
 
+RUN yum install mod_ssl -y
+# RUN yum install crypto-utils -y
+RUN cp /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.original
+COPY conf/ssl.conf /etc/httpd/conf.d/
+
 RUN yum install gettext -y
 RUN envsubst '$${DOCROOT_FOLDER}' < /etc/httpd/conf.d/httpd-vhosts.conf.template > /etc/httpd/conf.d/httpd-vhosts.conf
 
@@ -55,7 +60,7 @@ COPY conf/supervisord.conf /etc/
 
 WORKDIR ${DOCROOT_FOLDER}
 
-EXPOSE 80
+EXPOSE 80 443
 
 ADD ./scripts /scripts
 RUN chmod 755 /scripts/*
