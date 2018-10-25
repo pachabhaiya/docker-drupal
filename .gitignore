@@ -12,3 +12,4 @@
 
 /www/*
 !/www/.gitkeep
+!/www/index.php
