@@ -4,7 +4,7 @@ services:
   web:
     build:
       context: ./container/web
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.php-${PHP_VERSION}
       args:
         - DOCROOT_FOLDER=${DOCROOT_FOLDER}
     restart: always
@@ -12,7 +12,7 @@ services:
       - "443:443"
     volumes:
       - ./www:/var/www/html
-      - ./container/web/conf/php.ini:/etc/php.ini
+      - ./container/web/conf/php/${PHP_VERSION}/etc/php.ini:/etc/php.ini
 
   db:
     build:

@@ -1,4 +1,0 @@
-<VirtualHost *:80>
-  DocumentRoot ${DOCROOT_FOLDER}
-  DirectoryIndex index.php index.html
-</VirtualHost>

@@ -3,7 +3,7 @@ FROM centos:7
 LABEL maintainer.name="Chhabi Pachabhaiya" \
       maintainer.email="chhabi@pachabhaiya.com" \
       version="1.0" \
-      description="PHP-FPM 5.6 and Apache 2.4 in CentOS 7."
+      description="PHP-FPM 7.2 and Apache 2.4 in CentOS 7."
 
 ARG DOCROOT_FOLDER=/var/www/html
 ENV DOCROOT_FOLDER=${DOCROOT_FOLDER}
@@ -27,10 +27,10 @@ RUN yum install gettext -y
 # Install repository auto-configuration package for Enterprise Linux 7.
 RUN yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm -y
 
-# Enable remi-php56 repository.
-RUN yum-config-manager --enable remi-php56
+# Enable remi-php72 repository.
+RUN yum-config-manager --enable remi-php72
 
-# Install php-fpm and additional packages required for Drupal 7.
+# Install php-fpm and additional packages required for Drupal.
 RUN yum install php-fpm php-mysql php-pdo php-gd php-mbstring php-opcache php-xml -y
 
 # Install supervisor package. This is needed to run multiple services
@@ -44,6 +44,9 @@ RUN wget -P /tmp https://github.com/drush-ops/drush/releases/download/8.1.16/dru
 RUN chmod a+x /tmp/drush.phar
 RUN mv /tmp/drush.phar /usr/local/bin/drush
 
+RUN mkdir /var/run/php-fpm
+RUN chmod 755 /var/run/php-fpm
+
 # Make a copy of original configuration files.
 RUN cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.original
 RUN cp /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.original
@@ -56,7 +59,7 @@ COPY conf/apache/etc/httpd/conf.d/httpd-vhosts.conf.template /etc/httpd/conf.d/
 COPY conf/apache/etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/
 COPY conf/apache/etc/httpd/conf.modules.d/00-mpm.conf /etc/httpd/conf.modules.d/
 COPY conf/apache/etc/httpd/conf.d/php.conf /etc/httpd/conf.d/
-COPY conf/php/5.6/etc/php-fpm.d/www.conf /etc/php-fpm.d/
+COPY conf/php/7.2/etc/php-fpm.d/www.conf /etc/php-fpm.d/
 COPY conf/supervisor/supervisord.conf /etc/
 
 # Substitute environment variables.
