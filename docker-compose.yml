@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile.php-${PHP_VERSION}
       args:
         - DOCROOT_FOLDER=${DOCROOT_FOLDER}
+    container_name: web
     restart: always
     ports:
       - "443:443"
@@ -15,9 +16,8 @@ services:
       - ./container/web/conf/php/${PHP_VERSION}/etc/php.ini:/etc/php.ini
 
   db:
-    build:
-      context: ./container/db
-      dockerfile: Dockerfile
+    image: mariadb:${MARIADB_VERSION}
+    container_name: db
     restart: always
     ports:
         - "3306:3306"
@@ -32,6 +32,7 @@ services:
 
   adminer:
     image: adminer
+    container_name: adminer
     restart: always
     ports:
       - 8888:8080
@@ -40,6 +41,7 @@ services:
     build:
       context: ./container/varnish
       dockerfile: Dockerfile
+    container_name: varnish
     restart: always
     ports:
       - "80:80"
