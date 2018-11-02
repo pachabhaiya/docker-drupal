@@ -48,3 +48,12 @@ services:
     volumes:
       - ./container/varnish/conf/varnish.params:/etc/varnish/varnish.params
       - ./container/varnish/conf/default.vcl:/etc/varnish/default.vcl
+
+  solr:
+    build:
+      context: ./container/solr/${SOLR_VERSION}
+      dockerfile: Dockerfile
+    container_name: solr
+    restart: always
+    ports:
+      - "8983:8983"
