@@ -13,3 +13,7 @@
 /www/*
 !/www/.gitkeep
 !/www/index.php
+
+# Ignore custom solr config files.
+/container/solr/4/conf/*
+/container/solr/4/conf/.gitkeep
