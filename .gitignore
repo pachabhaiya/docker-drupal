@@ -19,3 +19,6 @@
 !/container/solr/4/conf/.gitkeep
 /solr-data/*
 !/solr-data/.gitkeep
+
+# Ignore override file.
+docker-compose.override.yml
