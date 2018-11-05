@@ -14,6 +14,8 @@
 !/www/.gitkeep
 !/www/index.php
 
-# Ignore custom solr config files.
+# Ignore custom solr config and data files.
 /container/solr/4/conf/*
-/container/solr/4/conf/.gitkeep
+!/container/solr/4/conf/.gitkeep
+/solr-data/*
+!/solr-data/.gitkeep
