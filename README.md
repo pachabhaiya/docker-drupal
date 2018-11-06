@@ -31,9 +31,12 @@ MYSQL_DATABASE=drupal_db
 MYSQL_USER=drupaluser
 MYSQL_PASSWORD=pa55w0Rd
 
-DOCROOT_FOLDER=/var/www/html
 PHP_VERSION=7.2
 MARIADB_VERSION=10
+SOLR_VERSION=4
+
+DOCROOT_FOLDER=/var/www/html
+SERVER_NAME=www.drupal.local
 ```
 
 Supported PHP versions: 5.6 and 7.2
@@ -44,9 +47,13 @@ Supported MariaDB versions: 5 and 10
 
 ```bash
 # Create and start containers.
-# -d = Detached mode
+# -d = Detached mode (run in background)
 # --build = Build images before starting containers
 $ docker-compose up -d --build
+
+# Create and start the containers in background mode
+# --build is not needed if the containers are already built.
+$ docker-compose up -d
 
 # List all running containers.
 $ docker container ls
@@ -54,4 +61,12 @@ $ docker container ls
 
 ## 4. Test page
 
-http://localhost
+http://www.drupal.local
+
+https://www.drupal.local
+
+## 5. Stop Docker containers
+
+```bash
+$ docker-compose down
+```
