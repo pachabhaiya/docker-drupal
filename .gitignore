@@ -22,3 +22,9 @@
 
 # Ignore override file.
 docker-compose.override.yml
+
+# Ignore certificate files.
+/container/nginx/ssl/certs/*
+!/container/nginx/ssl/certs/.gitkeep
+/container/nginx/ssl/private/*
+!/container/nginx/ssl/private/.gitkeep

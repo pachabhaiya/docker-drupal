@@ -8,6 +8,8 @@ Local Development Environment for Drupal 7/8 site using Docker.
 | db | MariaDB 5/10 - Official repository |
 | adminer | Adminer - Official repository |
 | varnish | Varnish 4.1<br />Base Image = CentOS 7 |
+| nginx | SSL termination proxy |
+| solr | Apache Solr 4.10.4 |
 
 ---
 

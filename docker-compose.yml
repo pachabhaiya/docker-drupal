@@ -9,8 +9,6 @@ services:
         - DOCROOT_FOLDER=${DOCROOT_FOLDER}
     container_name: web
     restart: always
-    ports:
-      - "443:443"
     volumes:
       - ./www:/var/www/html
       - ./container/web/conf/php/${PHP_VERSION}/etc/php.ini:/etc/php.ini
@@ -48,6 +46,17 @@ services:
     volumes:
       - ./container/varnish/conf/varnish.params:/etc/varnish/varnish.params
       - ./container/varnish/conf/default.vcl:/etc/varnish/default.vcl
+
+  nginx:
+    build:
+      context: ./container/nginx
+      args:
+        - SERVER_NAME=${SERVER_NAME}
+    container_name: nginx
+    restart: always
+    ports:
+      - "443:443"
+    command: /bin/bash -c "nginx -g 'daemon off;'"
 
   solr:
     build:
