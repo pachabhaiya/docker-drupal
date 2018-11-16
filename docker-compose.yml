@@ -20,7 +20,7 @@ services:
     ports:
         - "3306:3306"
     volumes:
-      - ./db-files:/var/lib/mysql
+      - ./data/db:/var/lib/mysql
       - ./db-dump:/tmp
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}

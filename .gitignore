@@ -5,8 +5,8 @@
 .env
 
 # Ignore database files.
-/db-files/*
-!/db-files/.gitkeep
+/data/db/*
+!/data/db/.gitkeep
 /db-dump/*
 !/db-dump/.gitkeep
 
@@ -17,8 +17,8 @@
 # Ignore custom solr config and data files.
 /container/solr/4/conf/*
 !/container/solr/4/conf/.gitkeep
-/solr-data/*
-!/solr-data/.gitkeep
+/data/solr/*
+!/data/solr/.gitkeep
 
 # Ignore override file.
 docker-compose.override.yml

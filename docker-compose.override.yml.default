@@ -3,7 +3,7 @@ version: '3'
 services:
   solr:
     volumes:
-      - ./solr-data:/opt/solr/example/solr/collection1/data
+      - ./data/solr:/opt/solr/example/solr/collection1/data
       - ./container/solr/4/conf/elevate.xml:/opt/solr/example/solr/collection1/conf/elevate.xml
       - ./container/solr/4/conf/mapping-ISOLatin1Accent.txt:/opt/solr/example/solr/collection1/conf/mapping-ISOLatin1Accent.txt
       - ./container/solr/4/conf/protwords.txt:/opt/solr/example/solr/collection1/conf/protwords.txt
