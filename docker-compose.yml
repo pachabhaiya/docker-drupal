@@ -14,7 +14,9 @@ services:
       - ./container/web/conf/php/${PHP_VERSION}/etc/php.ini:/etc/php.ini
 
   db:
-    image: mariadb:${MARIADB_VERSION}
+    build:
+      context: ./container/db
+      dockerfile: Dockerfile.${MARIADB_VERSION}
     container_name: db
     restart: always
     ports:
@@ -22,6 +24,7 @@ services:
     volumes:
       - ./data/db:/var/lib/mysql
       - ./db-dump:/tmp
+      - ./container/db/conf/custom.cnf:/etc/mysql/conf.d/custom.cnf
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
