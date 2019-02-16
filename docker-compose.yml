@@ -6,66 +6,67 @@ services:
       context: ./container/web
       dockerfile: Dockerfile.php-${PHP_VERSION}
       args:
-        - DOCROOT_FOLDER=${DOCROOT_FOLDER}
-    container_name: web
+        - DOCROOT_FOLDER=/var/www/${DOCROOT_PATH}
+    # container_name: web
     restart: always
+    ports:
+      - "2080:80"
     volumes:
-      - ./www:/var/www/html
+      - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
       - ./container/web/conf/php/${PHP_VERSION}/etc/php.ini:/etc/php.ini
 
-  db:
-    build:
-      context: ./container/db
-      dockerfile: Dockerfile.${MARIADB_VERSION}
-    container_name: db
-    restart: always
-    ports:
-        - "3306:3306"
-    volumes:
-      - ./data/db:/var/lib/mysql
-      - ./db-dump:/tmp
-      - ./container/db/conf/custom.cnf:/etc/mysql/conf.d/custom.cnf
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+  # db:
+  #   build:
+  #     context: ./container/db
+  #     dockerfile: Dockerfile.${MARIADB_VERSION}
+  #   # container_name: db
+  #   restart: always
+  #   ports:
+  #       - "13306:3306"
+  #   volumes:
+  #     - ./data/db:/var/lib/mysql
+  #     - ./db-dump:/tmp
+  #     - ./container/db/conf/custom.cnf:/etc/mysql/conf.d/custom.cnf
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+  #     - MYSQL_DATABASE=${MYSQL_DATABASE}
+  #     - MYSQL_USER=${MYSQL_USER}
+  #     - MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
-  adminer:
-    image: adminer
-    container_name: adminer
-    restart: always
-    ports:
-      - 8888:8080
+  # adminer:
+  #   image: adminer
+  #   container_name: adminer
+  #   restart: always
+  #   ports:
+  #     - 8888:8080
 
-  varnish:
-    build:
-      context: ./container/varnish
-      dockerfile: Dockerfile
-    container_name: varnish
-    restart: always
-    ports:
-      - "80:80"
-    volumes:
-      - ./container/varnish/conf/varnish.params:/etc/varnish/varnish.params
-      - ./container/varnish/conf/default.vcl:/etc/varnish/default.vcl
+  # varnish:
+  #   build:
+  #     context: ./container/varnish
+  #     dockerfile: Dockerfile
+  #   # container_name: varnish
+  #   restart: always
+  #   ports:
+  #     - "1080:80"
+  #   volumes:
+  #     - ./container/varnish/conf/varnish.params:/etc/varnish/varnish.params
+  #     - ./container/varnish/conf/default.vcl:/etc/varnish/default.vcl
 
-  nginx:
-    build:
-      context: ./container/nginx
-      args:
-        - SERVER_NAME=${SERVER_NAME}
-    container_name: nginx
-    restart: always
-    ports:
-      - "443:443"
-    command: /bin/bash -c "nginx -g 'daemon off;'"
+  # nginx:
+  #   build:
+  #     context: ./container/nginx
+  #     args:
+  #       - SERVER_NAME=${SERVER_NAME}
+  #   restart: always
+  #   ports:
+  #     - "1443:443"
+  #   command: /bin/bash -c "nginx -g 'daemon off;'"
 
-  solr:
-    build:
-      context: ./container/solr/${SOLR_VERSION}
-      dockerfile: Dockerfile
-    container_name: solr
-    restart: always
-    ports:
-      - "8983:8983"
+  # solr:
+  #   build:
+  #     context: ./container/solr/${SOLR_VERSION}
+  #     dockerfile: Dockerfile
+  #   container_name: solr
+  #   restart: always
+  #   ports:
+  #     - "8983:8983"

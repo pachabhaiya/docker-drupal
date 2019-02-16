@@ -1,4 +1,9 @@
 <VirtualHost *:80>
   DocumentRoot ${DOCROOT_FOLDER}
   DirectoryIndex index.php index.html
+
+  <Directory "${DOCROOT_FOLDER}">
+    Options Indexes FollowSymLinks
+    AllowOverride All
+  </Directory>
 </VirtualHost>
