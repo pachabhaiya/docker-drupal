@@ -39,7 +39,7 @@ RUN yum install supervisor -y
 
 # Install additional packages needed for Drush to work.
 # Drush does not work if database server is not installed in web container
-RUN yum install mariadb drush git wget -y
+RUN yum install mariadb drush git wget zip unzip -y
 RUN wget -P /tmp https://github.com/drush-ops/drush/releases/download/8.1.16/drush.phar
 RUN chmod a+x /tmp/drush.phar
 RUN mv /tmp/drush.phar /usr/local/bin/drush
