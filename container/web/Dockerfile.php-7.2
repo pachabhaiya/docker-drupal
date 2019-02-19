@@ -8,6 +8,9 @@ LABEL maintainer.name="Chhabi Pachabhaiya" \
 ARG DOCROOT_FOLDER=/var/www/html
 ENV DOCROOT_FOLDER=${DOCROOT_FOLDER}
 
+ARG WORKDIR=/var/www/html
+ENV WORKDIR=${WORKDIR}
+
 # Update all packages.
 RUN yum update -y
 
@@ -71,7 +74,7 @@ COPY conf/supervisor/supervisord.conf /etc/
 # Substitute environment variables.
 RUN envsubst '$${DOCROOT_FOLDER}' < /etc/httpd/conf.d/httpd-vhosts.conf.template > /etc/httpd/conf.d/httpd-vhosts.conf
 
-WORKDIR ${DOCROOT_FOLDER}
+WORKDIR ${WORKDIR}
 
 EXPOSE 80 443
 

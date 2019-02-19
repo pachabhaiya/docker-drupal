@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile.php-${PHP_VERSION}
       args:
         - DOCROOT_FOLDER=/var/www/${DOCROOT_PATH}
+        - WORKDIR=/var/www/${WORKDIR}
     restart: always
     ports:
       - "${WEB_PORT}:80"
@@ -53,12 +54,11 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
-  # adminer:
-  #   image: adminer
-  #   container_name: adminer
-  #   restart: always
-  #   ports:
-  #     - "${ADMINER_PORT}:8080"
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "${ADMINER_PORT}:8080"
 
   # solr:
   #   build:
