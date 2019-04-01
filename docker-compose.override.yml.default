@@ -2,6 +2,13 @@ version: '3'
 
 services:
   solr:
+    build:
+      context: ./container/solr/${SOLR_VERSION}
+      dockerfile: Dockerfile
+    container_name: ${SOLR_CONTAINER_NAME}
+    restart: always
+    ports:
+      - "${SOLR_PORT}:8983"
     volumes:
       - ./data/solr:/opt/solr/example/solr/collection1/data
       - ./container/solr/4/conf/elevate.xml:/opt/solr/example/solr/collection1/conf/elevate.xml
