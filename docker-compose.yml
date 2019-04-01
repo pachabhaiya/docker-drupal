@@ -6,21 +6,47 @@ services:
       context: ./container/web
       dockerfile: Dockerfile.php-${PHP_VERSION}
       args:
-        - DOCROOT_FOLDER=${DOCROOT_FOLDER}
-    container_name: web
+        - DOCROOT_FOLDER=/var/www/${DOCROOT_PATH}
+        - WORKDIR=/var/www/${WORKDIR}
     restart: always
+    container_name: ${WEB_CONTAINER_NAME}
+    ports:
+      - "${WEB_PORT}:80"
     volumes:
-      - ./www:/var/www/html
+      - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
       - ./container/web/conf/php/${PHP_VERSION}/etc/php.ini:/etc/php.ini
+
+  varnish:
+    build:
+      context: ./container/varnish
+      dockerfile: Dockerfile
+    container_name: ${VARNISH_CONTAINER_NAME}
+    restart: always
+    ports:
+      - "${VARNISH_PORT}:80"
+    volumes:
+      - ./container/varnish/conf/varnish.params:/etc/varnish/varnish.params
+      - ./container/varnish/conf/default.vcl:/etc/varnish/default.vcl
+
+  nginx:
+    build:
+      context: ./container/nginx
+      args:
+        - SERVER_NAME=${SERVER_NAME}
+    container_name: ${NGINX_CONTAINER_NAME}
+    restart: always
+    ports:
+      - "${NGINX_PORT}:443"
+    command: /bin/bash -c "nginx -g 'daemon off;'"
 
   db:
     build:
       context: ./container/db
       dockerfile: Dockerfile.${MARIADB_VERSION}
-    container_name: db
+    container_name: ${DB_CONTAINER_NAME}
     restart: always
     ports:
-        - "3306:3306"
+        - "${DB_PORT}:3306"
     volumes:
       - ./data/db:/var/lib/mysql
       - ./db-dump:/tmp
@@ -33,39 +59,16 @@ services:
 
   adminer:
     image: adminer
-    container_name: adminer
+    container_name: ${ADMINER_CONTAINER_NAME}
     restart: always
     ports:
-      - 8888:8080
+      - "${ADMINER_PORT}:8080"
 
-  varnish:
-    build:
-      context: ./container/varnish
-      dockerfile: Dockerfile
-    container_name: varnish
-    restart: always
-    ports:
-      - "80:80"
-    volumes:
-      - ./container/varnish/conf/varnish.params:/etc/varnish/varnish.params
-      - ./container/varnish/conf/default.vcl:/etc/varnish/default.vcl
-
-  nginx:
-    build:
-      context: ./container/nginx
-      args:
-        - SERVER_NAME=${SERVER_NAME}
-    container_name: nginx
-    restart: always
-    ports:
-      - "443:443"
-    command: /bin/bash -c "nginx -g 'daemon off;'"
-
-  solr:
-    build:
-      context: ./container/solr/${SOLR_VERSION}
-      dockerfile: Dockerfile
-    container_name: solr
-    restart: always
-    ports:
-      - "8983:8983"
+  # solr:
+  #   build:
+  #     context: ./container/solr/${SOLR_VERSION}
+  #     dockerfile: Dockerfile
+  #   container_name: ${SOLR_CONTAINER_NAME}
+  #   restart: always
+  #   ports:
+  #     - "${SOLR_PORT}:8983"

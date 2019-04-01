@@ -8,6 +8,9 @@ LABEL maintainer.name="Chhabi Pachabhaiya" \
 ARG DOCROOT_FOLDER=/var/www/html
 ENV DOCROOT_FOLDER=${DOCROOT_FOLDER}
 
+ARG WORKDIR=/var/www/html
+ENV WORKDIR=${WORKDIR}
+
 # Update all packages.
 RUN yum update -y
 
@@ -44,6 +47,17 @@ RUN wget -P /tmp https://github.com/drush-ops/drush/releases/download/8.1.16/dru
 RUN chmod a+x /tmp/drush.phar
 RUN mv /tmp/drush.phar /usr/local/bin/drush
 
+# Install composer.
+RUN yum install zip unzip -y
+RUN wget -P /usr/local/bin https://getcomposer.org/download/1.8.4/composer.phar
+RUN chmod a+x /usr/local/bin/composer.phar
+RUN ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
+
+# Install Drupal Console Launcher
+RUN curl https://drupalconsole.com/installer -L -o drupal.phar
+RUN mv drupal.phar /usr/local/bin/drupal
+RUN chmod a+x /usr/local/bin/drupal
+
 RUN mkdir /var/run/php-fpm
 RUN chmod 755 /var/run/php-fpm
 
@@ -65,7 +79,7 @@ COPY conf/supervisor/supervisord.conf /etc/
 # Substitute environment variables.
 RUN envsubst '$${DOCROOT_FOLDER}' < /etc/httpd/conf.d/httpd-vhosts.conf.template > /etc/httpd/conf.d/httpd-vhosts.conf
 
-WORKDIR ${DOCROOT_FOLDER}
+WORKDIR ${WORKDIR}
 
 EXPOSE 80 443
 
