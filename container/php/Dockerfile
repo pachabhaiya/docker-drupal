@@ -10,7 +10,30 @@ RUN apt update \
     git \
     # needed for composer
     wget \
-    vim
+    vim \
+    zip \
+    unzip \
+    # https://stackoverflow.com/questions/61228386/installing-gd-extension-in-docker
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev
+
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+  && docker-php-ext-install -j$(nproc) gd
+
+# RUN docker-php-ext-install \
+#     mysqli \
+#     pdo_mysql \
+#     gd \
+#     mbstring \
+#     xsl \
+#     opcache \
+#     calendar \
+#     intl \
+#     exif \
+#     ftp \
+#     bcmath \
+#     zip
 
 # Install composer.
 RUN wget -O composer-setup.php https://getcomposer.org/installer \
