@@ -39,7 +39,7 @@ services:
   #     - "${NGINX_PORT}:443"
   #   command: /bin/bash -c "nginx -g 'daemon off;'"
 
-  nginx:
+  web:
     build:
       context: ./container/nginx
       args:
@@ -79,23 +79,21 @@ services:
     working_dir: /var/www/${PROJECT_FOLDER_NAME}
 
 
-  # db:
-  #   build:
-  #     context: ./container/db
-  #     dockerfile: Dockerfile.${MARIADB_VERSION}
-  #   container_name: ${DB_CONTAINER_NAME}
-  #   restart: always
-  #   ports:
-  #       - "${DB_PORT}:3306"
-  #   volumes:
-  #     - ./data/db:/var/lib/mysql
-  #     - ./db-dump:/tmp
-  #     - ./container/db/conf/custom.cnf:/etc/mysql/conf.d/custom.cnf
-  #   environment:
-  #     - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
-  #     - MYSQL_DATABASE=${MYSQL_DATABASE}
-  #     - MYSQL_USER=${MYSQL_USER}
-  #     - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+  db:
+    build:
+      context: ./container/mariadb
+      dockerfile: Dockerfile
+    ports:
+        - "3306:3306"
+    volumes:
+      - ./data/db:/var/lib/mysql
+      # - ./db-dump:/tmp
+      - ./container/mariadb/conf/custom.cnf:/etc/mysql/conf.d/custom.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
   # adminer:
   #   image: adminer
