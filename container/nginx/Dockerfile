@@ -1,7 +1,10 @@
 FROM nginx:latest
 
-ARG SERVER_NAME=www.drupal.local
+ARG SERVER_NAME
 ENV SERVER_NAME=${SERVER_NAME}
+
+ARG PROJECT_FOLDER_NAME
+ENV PROJECT_FOLDER_NAME=${PROJECT_FOLDER_NAME}
 
 # RUN apt-get update -y
 
@@ -31,4 +34,5 @@ RUN cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.original
 COPY conf/nginx.conf.template /etc/nginx/conf.d/
 
 # Substitute environment variables.
-RUN envsubst '$${SERVER_NAME}' < /etc/nginx/conf.d/nginx.conf.template > /etc/nginx/conf.d/default.conf
+# RUN envsubst < "/etc/nginx/conf.d/nginx.conf.template" > "/etc/nginx/conf.d/default.conf"
+RUN envsubst '$${SERVER_NAME} $${PROJECT_FOLDER_NAME}' < /etc/nginx/conf.d/nginx.conf.template > /etc/nginx/conf.d/default.conf

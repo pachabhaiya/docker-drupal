@@ -44,6 +44,7 @@ services:
       context: ./container/nginx
       args:
         - SERVER_NAME=${SERVER_NAME}
+        - PROJECT_FOLDER_NAME=${PROJECT_FOLDER_NAME}
     # container_name: ${NGINX_CONTAINER_NAME}
     # restart: always
     # hostname: www.drupal.local
