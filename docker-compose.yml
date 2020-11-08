@@ -42,16 +42,16 @@ services:
   nginx:
     build:
       context: ./container/nginx
-      # args:
-      #   - SERVER_NAME=${SERVER_NAME}
+      args:
+        - SERVER_NAME=${SERVER_NAME}
     # container_name: ${NGINX_CONTAINER_NAME}
     # restart: always
-    hostname: docker-drupal.local
+    # hostname: www.drupal.local
     ports:
       - "8888:80"
     volumes:
       - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
-      - ./container/nginx/conf/site.conf:/etc/nginx/conf.d/site.conf
+      # - ./container/nginx/conf/site.conf:/etc/nginx/conf.d/site.conf
     links:
       - php
     # command: /bin/bash -c "nginx -g 'daemon off;'"

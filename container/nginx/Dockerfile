@@ -1,8 +1,7 @@
 FROM nginx:latest
 
-
-# ARG SERVER_NAME=www.drupal.local
-# ENV SERVER_NAME=${SERVER_NAME}
+ARG SERVER_NAME=www.drupal.local
+ENV SERVER_NAME=${SERVER_NAME}
 
 # RUN apt-get update -y
 
@@ -25,11 +24,11 @@ FROM nginx:latest
 #   -sha256 \
 #   -days 3650
 
-# # Make a copy of original configuration files.
-# RUN cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.original
+# Make a copy of original configuration files.
+RUN cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.original
 
-# # Copy configuration files from host to container.
-# COPY conf/nginx.conf.template /etc/nginx/conf.d/
+# Copy configuration files from host to container.
+COPY conf/nginx.conf.template /etc/nginx/conf.d/
 
-# # Substitute environment variables.
-# RUN envsubst '$${SERVER_NAME}' < /etc/nginx/conf.d/nginx.conf.template > /etc/nginx/conf.d/default.conf
+# Substitute environment variables.
+RUN envsubst '$${SERVER_NAME}' < /etc/nginx/conf.d/nginx.conf.template > /etc/nginx/conf.d/default.conf
