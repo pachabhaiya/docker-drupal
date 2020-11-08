@@ -1,68 +1,107 @@
 version: '3'
 
 services:
-  web:
-    build:
-      context: ./container/web
-      dockerfile: Dockerfile.php-${PHP_VERSION}
-      args:
-        - DOCROOT_FOLDER=/var/www/${DOCROOT_PATH}
-        - WORKDIR=/var/www/${WORKDIR}
-    restart: always
-    container_name: ${WEB_CONTAINER_NAME}
-    ports:
-      - "${WEB_PORT}:80"
-    volumes:
-      - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
-      - ./container/web/conf/php/${PHP_VERSION}/etc/php.ini:/etc/php.ini
+  # web:
+  #   build:
+  #     context: ./container/web
+  #     dockerfile: Dockerfile.php-${PHP_VERSION}
+  #     args:
+  #       - DOCROOT_FOLDER=/var/www/${DOCROOT_PATH}
+  #       - WORKDIR=/var/www/${WORKDIR}
+  #   restart: always
+  #   container_name: ${WEB_CONTAINER_NAME}
+  #   ports:
+  #     - "${WEB_PORT}:80"
+  #   volumes:
+  #     - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
+  #     - ./container/web/conf/php/${PHP_VERSION}/etc/php.ini:/etc/php.ini
 
-  varnish:
-    build:
-      context: ./container/varnish
-      dockerfile: Dockerfile
-    container_name: ${VARNISH_CONTAINER_NAME}
-    restart: always
-    ports:
-      - "${VARNISH_PORT}:80"
-    volumes:
-      - ./container/varnish/conf/varnish.params:/etc/varnish/varnish.params
-      - ./container/varnish/conf/default.vcl:/etc/varnish/default.vcl
+  # varnish:
+  #   build:
+  #     context: ./container/varnish
+  #     dockerfile: Dockerfile
+  #   container_name: ${VARNISH_CONTAINER_NAME}
+  #   restart: always
+  #   ports:
+  #     - "${VARNISH_PORT}:80"
+  #   volumes:
+  #     - ./container/varnish/conf/varnish.params:/etc/varnish/varnish.params
+  #     - ./container/varnish/conf/default.vcl:/etc/varnish/default.vcl
+
+  # nginx:
+  #   build:
+  #     context: ./container/nginx
+  #     args:
+  #       - SERVER_NAME=${SERVER_NAME}
+  #   container_name: ${NGINX_CONTAINER_NAME}
+  #   restart: always
+  #   ports:
+  #     - "${NGINX_PORT}:443"
+  #   command: /bin/bash -c "nginx -g 'daemon off;'"
 
   nginx:
     build:
       context: ./container/nginx
-      args:
-        - SERVER_NAME=${SERVER_NAME}
-    container_name: ${NGINX_CONTAINER_NAME}
-    restart: always
+      # args:
+      #   - SERVER_NAME=${SERVER_NAME}
+    # container_name: ${NGINX_CONTAINER_NAME}
+    # restart: always
+    hostname: docker-drupal.local
     ports:
-      - "${NGINX_PORT}:443"
-    command: /bin/bash -c "nginx -g 'daemon off;'"
-
-  db:
-    build:
-      context: ./container/db
-      dockerfile: Dockerfile.${MARIADB_VERSION}
-    container_name: ${DB_CONTAINER_NAME}
-    restart: always
-    ports:
-        - "${DB_PORT}:3306"
+      - "8888:80"
     volumes:
-      - ./data/db:/var/lib/mysql
-      - ./db-dump:/tmp
-      - ./container/db/conf/custom.cnf:/etc/mysql/conf.d/custom.cnf
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
+      - ./container/nginx/conf/site.conf:/etc/nginx/conf.d/site.conf
+    links:
+      - php
+    # command: /bin/bash -c "nginx -g 'daemon off;'"
 
-  adminer:
-    image: adminer
-    container_name: ${ADMINER_CONTAINER_NAME}
-    restart: always
-    ports:
-      - "${ADMINER_PORT}:8080"
+  # nginx:
+  #   image: nginx:latest
+  #   hostname: docker-drupal.local
+  #   ports:
+  #     - "8888:80"
+  #   volumes:
+  #     - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
+  #     - ./site.conf:/etc/nginx/conf.d/site.conf
+  #   links:
+  #     - php
+
+  php:
+    build:
+      context: ./container/php
+      dockerfile: Dockerfile
+      args:
+        - PHP_TAG=${PHP_TAG}
+    volumes:
+      - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
+    working_dir: /var/www/${PROJECT_FOLDER_NAME}
+
+
+  # db:
+  #   build:
+  #     context: ./container/db
+  #     dockerfile: Dockerfile.${MARIADB_VERSION}
+  #   container_name: ${DB_CONTAINER_NAME}
+  #   restart: always
+  #   ports:
+  #       - "${DB_PORT}:3306"
+  #   volumes:
+  #     - ./data/db:/var/lib/mysql
+  #     - ./db-dump:/tmp
+  #     - ./container/db/conf/custom.cnf:/etc/mysql/conf.d/custom.cnf
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+  #     - MYSQL_DATABASE=${MYSQL_DATABASE}
+  #     - MYSQL_USER=${MYSQL_USER}
+  #     - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+  # adminer:
+  #   image: adminer
+  #   container_name: ${ADMINER_CONTAINER_NAME}
+  #   restart: always
+  #   ports:
+  #     - "${ADMINER_PORT}:8080"
 
   # solr:
   #   build:
