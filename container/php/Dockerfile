@@ -28,9 +28,11 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     gd \
     opcache
 
+# https://www.scalingphpbook.com/blog/2014/02/14/best-zend-opcache-settings.html
+# https://laravel-news.com/php-opcache-docker
 COPY conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
-# https://laravel-news.com/php-opcache-docker
+
 
 # RUN docker-php-ext-install \
 #     mysqli \
