@@ -2,6 +2,11 @@ ARG PHP_TAG=7.4.12-fpm-buster
 
 FROM php:${PHP_TAG}
 
+ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
+    PHP_OPCACHE_MAX_ACCELERATED_FILES="10000" \
+    PHP_OPCACHE_MEMORY_CONSUMPTION="192" \
+    PHP_OPCACHE_MAX_WASTED_PERCENTAGE="10"
+
 RUN apt update \
   && apt upgrade -y \
   && apt autoremove -y \
