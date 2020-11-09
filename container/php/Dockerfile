@@ -23,6 +23,10 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     gd \
     opcache
 
+COPY conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
+# https://laravel-news.com/php-opcache-docker
+
 # RUN docker-php-ext-install \
 #     mysqli \
 #     pdo_mysql \
