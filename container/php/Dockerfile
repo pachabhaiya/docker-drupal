@@ -23,10 +23,15 @@ RUN apt update \
     libjpeg62-turbo-dev \
     libpng-dev
 
+# https://medium.com/@didokun/run-drupal-8-with-composer-docker-compose-nginx-mariadb-php7-3-ca7d0cc71a99
+
+
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
   && docker-php-ext-install -j$(nproc) \
     gd \
-    opcache
+    opcache \
+    mysqli \
+    pdo_mysql
 
 # https://www.scalingphpbook.com/blog/2014/02/14/best-zend-opcache-settings.html
 # https://laravel-news.com/php-opcache-docker
