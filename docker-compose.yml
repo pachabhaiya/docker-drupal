@@ -1,44 +1,6 @@
 version: "3"
 
 services:
-  # web:
-  #   build:
-  #     context: ./container/web
-  #     dockerfile: Dockerfile.php-${PHP_VERSION}
-  #     args:
-  #       - DOCROOT_FOLDER=/var/www/${DOCROOT_PATH}
-  #       - WORKDIR=/var/www/${WORKDIR}
-  #   restart: always
-  #   container_name: ${WEB_CONTAINER_NAME}
-  #   ports:
-  #     - "${WEB_PORT}:80"
-  #   volumes:
-  #     - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
-  #     - ./container/web/conf/php/${PHP_VERSION}/etc/php.ini:/etc/php.ini
-
-  # varnish:
-  #   build:
-  #     context: ./container/varnish
-  #     dockerfile: Dockerfile
-  #   container_name: ${VARNISH_CONTAINER_NAME}
-  #   restart: always
-  #   ports:
-  #     - "${VARNISH_PORT}:80"
-  #   volumes:
-  #     - ./container/varnish/conf/varnish.params:/etc/varnish/varnish.params
-  #     - ./container/varnish/conf/default.vcl:/etc/varnish/default.vcl
-
-  # nginx:
-  #   build:
-  #     context: ./container/nginx
-  #     args:
-  #       - SERVER_NAME=${SERVER_NAME}
-  #   container_name: ${NGINX_CONTAINER_NAME}
-  #   restart: always
-  #   ports:
-  #     - "${NGINX_PORT}:443"
-  #   command: /bin/bash -c "nginx -g 'daemon off;'"
-
   web:
     build:
       context: ./container/nginx
@@ -57,17 +19,6 @@ services:
       - php
       - db
     # command: /bin/bash -c "nginx -g 'daemon off;'"
-
-  # nginx:
-  #   image: nginx:latest
-  #   hostname: docker-drupal.local
-  #   ports:
-  #     - "8888:80"
-  #   volumes:
-  #     - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
-  #     - ./site.conf:/etc/nginx/conf.d/site.conf
-  #   links:
-  #     - php
 
   php:
     build:
@@ -110,3 +61,52 @@ services:
   #   restart: always
   #   ports:
   #     - "${SOLR_PORT}:8983"
+
+  # web:
+  #   build:
+  #     context: ./container/web
+  #     dockerfile: Dockerfile.php-${PHP_VERSION}
+  #     args:
+  #       - DOCROOT_FOLDER=/var/www/${DOCROOT_PATH}
+  #       - WORKDIR=/var/www/${WORKDIR}
+  #   restart: always
+  #   container_name: ${WEB_CONTAINER_NAME}
+  #   ports:
+  #     - "${WEB_PORT}:80"
+  #   volumes:
+  #     - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
+  #     - ./container/web/conf/php/${PHP_VERSION}/etc/php.ini:/etc/php.ini
+
+  # varnish:
+  #   build:
+  #     context: ./container/varnish
+  #     dockerfile: Dockerfile
+  #   container_name: ${VARNISH_CONTAINER_NAME}
+  #   restart: always
+  #   ports:
+  #     - "${VARNISH_PORT}:80"
+  #   volumes:
+  #     - ./container/varnish/conf/varnish.params:/etc/varnish/varnish.params
+  #     - ./container/varnish/conf/default.vcl:/etc/varnish/default.vcl
+
+  # nginx:
+  #   build:
+  #     context: ./container/nginx
+  #     args:
+  #       - SERVER_NAME=${SERVER_NAME}
+  #   container_name: ${NGINX_CONTAINER_NAME}
+  #   restart: always
+  #   ports:
+  #     - "${NGINX_PORT}:443"
+  #   command: /bin/bash -c "nginx -g 'daemon off;'"
+
+  # nginx:
+  #   image: nginx:latest
+  #   hostname: docker-drupal.local
+  #   ports:
+  #     - "8888:80"
+  #   volumes:
+  #     - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
+  #     - ./site.conf:/etc/nginx/conf.d/site.conf
+  #   links:
+  #     - php
