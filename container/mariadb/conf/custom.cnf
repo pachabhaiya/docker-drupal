@@ -5,5 +5,5 @@ innodb_buffer_pool_size = 1024M
 general_log_file = /var/log/mysql/mysql.log
 general_log = 1
 
-log_slow_queries = /var/log/mysql/mysql-slow.log
-long_query_time = 2
+;log_slow_queries = /var/log/mysql/mysql-slow.log
+;long_query_time = 2
