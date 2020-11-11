@@ -31,8 +31,11 @@ ENV PROJECT_FOLDER_NAME=${PROJECT_FOLDER_NAME}
 RUN cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.original
 
 # Copy configuration files from host to container.
-COPY conf/nginx.conf.template /etc/nginx/conf.d/
+COPY conf/default.conf.template /etc/nginx/conf.d/
 
 # Substitute environment variables.
 # RUN envsubst < "/etc/nginx/conf.d/nginx.conf.template" > "/etc/nginx/conf.d/default.conf"
-RUN envsubst '$${SERVER_NAME} $${PROJECT_FOLDER_NAME}' < /etc/nginx/conf.d/nginx.conf.template > /etc/nginx/conf.d/default.conf
+RUN envsubst '$${SERVER_NAME} $${PROJECT_FOLDER_NAME}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
+
+
+# https://geekflare.com/php-fpm-optimization/

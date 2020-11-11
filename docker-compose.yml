@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   # web:
@@ -55,7 +55,7 @@ services:
       # - ./container/nginx/conf/site.conf:/etc/nginx/conf.d/site.conf
     links:
       - php
-      - db
+      # - db
     # command: /bin/bash -c "nginx -g 'daemon off;'"
 
   # nginx:
@@ -79,21 +79,21 @@ services:
       - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
     working_dir: /var/www/${PROJECT_FOLDER_NAME}
 
-  db:
-    build:
-      context: ./container/mariadb
-      dockerfile: Dockerfile
-    ports:
-        - "3306:3306"
-    volumes:
-      - ./data/db:/var/lib/mysql
-      # - ./db-dump:/tmp
-      - ./container/mariadb/conf/custom.cnf:/etc/mysql/conf.d/custom.cnf
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+  # db:
+  #   build:
+  #     context: ./container/mariadb
+  #     dockerfile: Dockerfile
+  #   ports:
+  #       - "3306:3306"
+  #   volumes:
+  #     - ./data/db:/var/lib/mysql
+  #     # - ./db-dump:/tmp
+  #     - ./container/mariadb/conf/custom.cnf:/etc/mysql/conf.d/custom.cnf
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+  #     - MYSQL_DATABASE=${MYSQL_DATABASE}
+  #     - MYSQL_USER=${MYSQL_USER}
+  #     - MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
   # adminer:
   #   image: adminer
