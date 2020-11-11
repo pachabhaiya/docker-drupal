@@ -4,6 +4,7 @@ services:
   web:
     build:
       context: ./container/nginx
+      dockerfile: Dockerfile
       args:
         - SERVER_NAME=${SERVER_NAME}
         - PROJECT_FOLDER_NAME=${PROJECT_FOLDER_NAME}
