@@ -29,6 +29,7 @@ ENV PROJECT_FOLDER_NAME=${PROJECT_FOLDER_NAME}
 
 # Make a copy of original configuration files.
 RUN cp /etc/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf.original
+RUN cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.original
 
 # Copy configuration files from host to container.
 COPY conf/default.conf.template /etc/nginx/conf.d/
