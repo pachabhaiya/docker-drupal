@@ -4,10 +4,9 @@ services:
   web:
     build:
       context: ./container/nginx
-      dockerfile: Dockerfile
       args:
         - SERVER_NAME=${SERVER_NAME}
-        - PROJECT_FOLDER_NAME=${PROJECT_FOLDER_NAME}
+        - DOCROOT=/var/www/${DOCROOT_PATH}
     # container_name: ${NGINX_CONTAINER_NAME}
     # restart: always
     # hostname: www.drupal.local
@@ -20,6 +19,17 @@ services:
       - php
       - db
     # command: /bin/bash -c "nginx -g 'daemon off;'"
+
+  # nginx:
+  #   image: nginx:latest
+  #   hostname: docker-drupal.local
+  #   ports:
+  #     - "8888:80"
+  #   volumes:
+  #     - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
+  #     - ./site.conf:/etc/nginx/conf.d/site.conf
+  #   links:
+  #     - php
 
   php:
     build:
@@ -100,14 +110,3 @@ services:
   #   ports:
   #     - "${NGINX_PORT}:443"
   #   command: /bin/bash -c "nginx -g 'daemon off;'"
-
-  # nginx:
-  #   image: nginx:latest
-  #   hostname: docker-drupal.local
-  #   ports:
-  #     - "8888:80"
-  #   volumes:
-  #     - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
-  #     - ./site.conf:/etc/nginx/conf.d/site.conf
-  #   links:
-  #     - php

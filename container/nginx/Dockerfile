@@ -3,8 +3,8 @@ FROM nginx:latest
 ARG SERVER_NAME
 ENV SERVER_NAME=${SERVER_NAME}
 
-ARG PROJECT_FOLDER_NAME
-ENV PROJECT_FOLDER_NAME=${PROJECT_FOLDER_NAME}
+ARG DOCROOT
+ENV DOCROOT=${DOCROOT}
 
 # RUN apt-get update -y
 
@@ -36,7 +36,7 @@ COPY conf/default.conf.template /etc/nginx/conf.d/
 
 # Substitute environment variables.
 # RUN envsubst < "/etc/nginx/conf.d/nginx.conf.template" > "/etc/nginx/conf.d/default.conf"
-RUN envsubst '$${SERVER_NAME} $${PROJECT_FOLDER_NAME}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
+RUN envsubst '$${SERVER_NAME} $${DOCROOT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
 
 
 # https://geekflare.com/php-fpm-optimization/
