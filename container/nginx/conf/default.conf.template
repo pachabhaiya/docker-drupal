@@ -59,10 +59,6 @@ server {
 
 
 
-    location = /testing {
-        log_not_found off;
-        access_log off;
-    }
 
 
     location = /favicon.ico {
