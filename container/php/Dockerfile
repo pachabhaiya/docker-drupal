@@ -1,4 +1,5 @@
 ARG PHP_TAG=7.4.12-fpm-buster
+ARG DRUSH_VERSION=10.3.6
 
 FROM php:${PHP_TAG}
 
@@ -56,3 +57,11 @@ COPY conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 # Install composer.
 RUN wget -O composer-setup.php https://getcomposer.org/installer \
   && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+# Drush
+RUN git clone https://github.com/drush-ops/drush.git /usr/local/src/drush \
+  && cd /usr/local/src/drush \
+  && git checkout ${DRUSH_VERSION} \
+  && ln -s /usr/local/src/drush/drush /usr/bin/drush \
+  && composer install \
+  && drush --version

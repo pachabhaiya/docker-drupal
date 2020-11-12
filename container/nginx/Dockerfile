@@ -6,9 +6,11 @@ ENV SERVER_NAME=${SERVER_NAME}
 ARG DOCROOT
 ENV DOCROOT=${DOCROOT}
 
-# RUN apt-get update -y
-
-# RUN apt-get install openssl -y
+RUN apt update -y \
+    && apt install -y \
+    curl \
+    vim \
+    openssl
 
 # RUN cp /usr/lib/ssl/openssl.cnf /usr/lib/ssl/openssl.cnf.original
 # RUN printf "[SAN]\nsubjectAltName=DNS:${SERVER_NAME}" >> /usr/lib/ssl/openssl.cnf

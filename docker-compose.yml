@@ -37,6 +37,7 @@ services:
       dockerfile: Dockerfile
       args:
         - PHP_TAG=${PHP_TAG}
+        - DRUSH_VERSION=${DRUSH_VERSION}
     volumes:
       - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
     working_dir: /var/www/${PROJECT_FOLDER_NAME}
