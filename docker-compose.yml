@@ -4,32 +4,19 @@ services:
   web:
     build:
       context: ./container/nginx
+      dockerfile: Dockerfile
       args:
         - SERVER_NAME=${SERVER_NAME}
-        - DOCROOT=/var/www/${DOCROOT_PATH}
-    # container_name: ${NGINX_CONTAINER_NAME}
-    # restart: always
-    # hostname: www.drupal.local
+        - DOCROOT=/var/www/${PROJECT_FOLDER_NAME}/web
     ports:
-      - "8888:80"
+      - "80:80"
+      - "443:443"
     volumes:
       - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
-      # - ./container/nginx/conf/site.conf:/etc/nginx/conf.d/site.conf
     links:
       - php
       - db
     # command: /bin/bash -c "nginx -g 'daemon off;'"
-
-  # nginx:
-  #   image: nginx:latest
-  #   hostname: docker-drupal.local
-  #   ports:
-  #     - "8888:80"
-  #   volumes:
-  #     - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
-  #     - ./site.conf:/etc/nginx/conf.d/site.conf
-  #   links:
-  #     - php
 
   php:
     build:
@@ -50,8 +37,6 @@ services:
       - "3306:3306"
     volumes:
       - ./data/db:/var/lib/mysql
-      # - ./db-dump:/tmp
-      - ./container/mariadb/conf/custom.cnf:/etc/mysql/conf.d/custom.cnf
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}

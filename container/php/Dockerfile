@@ -16,18 +16,13 @@ RUN apt update \
   && apt install -y \
   curl \
   git \
-  # needed for composer
   wget \
   vim \
   zip \
   unzip \
-  # https://stackoverflow.com/questions/61228386/installing-gd-extension-in-docker
   libfreetype6-dev \
   libjpeg62-turbo-dev \
   libpng-dev
-
-# https://medium.com/@didokun/run-drupal-8-with-composer-docker-compose-nginx-mariadb-php7-3-ca7d0cc71a99
-
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
   && docker-php-ext-install -j$(nproc) \
@@ -36,27 +31,9 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
   mysqli \
   pdo_mysql
 
-# https://www.scalingphpbook.com/blog/2014/02/14/best-zend-opcache-settings.html
-# https://laravel-news.com/php-opcache-docker
 COPY conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
-
-
-# RUN docker-php-ext-install \
-#     mysqli \
-#     pdo_mysql \
-#     gd \
-#     mbstring \
-#     xsl \
-#     opcache \
-#     calendar \
-#     intl \
-#     exif \
-#     ftp \
-#     bcmath \
-#     zip
-
-# Install composer.
+# Composer
 RUN wget -O composer-setup.php https://getcomposer.org/installer \
   && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 

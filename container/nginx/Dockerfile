@@ -37,8 +37,4 @@ RUN cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.original
 COPY conf/default.conf.template /etc/nginx/conf.d/
 
 # Substitute environment variables.
-# RUN envsubst < "/etc/nginx/conf.d/nginx.conf.template" > "/etc/nginx/conf.d/default.conf"
 RUN envsubst '$${SERVER_NAME} $${DOCROOT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf
-
-
-# https://geekflare.com/php-fpm-optimization/

@@ -7,24 +7,8 @@
 # Ignore database files.
 /data/db/*
 !/data/db/.gitkeep
-/db-dump/*
-!/db-dump/.gitkeep
 
+# Ignore project files
 /www/*
 !/www/.gitkeep
 !/www/index.php
-
-# Ignore custom solr config and data files.
-/container/solr/4/conf/*
-!/container/solr/4/conf/.gitkeep
-/data/solr/*
-!/data/solr/.gitkeep
-
-# Ignore override file.
-docker-compose.override.yml
-
-# Ignore certificate files.
-/container/nginx/ssl/certs/*
-!/container/nginx/ssl/certs/.gitkeep
-/container/nginx/ssl/private/*
-!/container/nginx/ssl/private/.gitkeep
