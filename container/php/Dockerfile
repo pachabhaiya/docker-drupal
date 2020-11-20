@@ -27,11 +27,15 @@ RUN apt update \
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
   && docker-php-ext-install -j$(nproc) \
   gd \
-  opcache \
+  # opcache \
   mysqli \
   pdo_mysql
 
-COPY conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
+COPY conf.d/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+# COPY conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 # Composer
 RUN wget -O composer-setup.php https://getcomposer.org/installer \
