@@ -2,18 +2,19 @@
 
 Local Development Environment for Drupal 7/8 site using Docker.
 
-| Container | Description |
-| :--- | :--- |
-| web | PHP-FPM 5.6/7.2 and Apache 2.4<br />Base Image = CentOS 7 |
-| db | MariaDB 5/10 - Official repository |
-| adminer | Adminer - Official repository |
-| varnish | Varnish 4.1<br />Base Image = CentOS 7 |
-| nginx | SSL termination proxy |
-| solr | Apache Solr 4.10.4 |
+| Container | Description                                               |
+| :-------- | :-------------------------------------------------------- |
+| web       | PHP-FPM 5.6/7.2 and Apache 2.4<br />Base Image = CentOS 7 |
+| db        | MariaDB 5/10 - Official repository                        |
+| adminer   | Adminer - Official repository                             |
+| varnish   | Varnish 4.1<br />Base Image = CentOS 7                    |
+| nginx     | SSL termination proxy                                     |
+| solr      | Apache Solr 4.10.4                                        |
 
 ---
 
 ## 1. Clone [`drupal-drupal`](https://github.com/pachabhaiya/docker-drupal) repository
+
 ```bash
 $ git clone https://github.com/pachabhaiya/docker-drupal.git
 $ cd docker-drupal
@@ -26,6 +27,7 @@ $ cp .env.default .env
 ```
 
 Change the value of environment variables as needed.
+
 ```
 MYSQL_DATABASE=drupal_db
 MYSQL_USER=drupaluser
@@ -91,4 +93,27 @@ https://www.drupal.local
 
 ```bash
 $ docker-compose down
+```
+
+# XDebug
+
+```json
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Listen for XDebug",
+      "type": "php",
+      "request": "launch",
+      "port": 9000,
+      "log": true,
+      "pathMappings": {
+        "/var/www/my-drupal-site/web": "${workspaceFolder}/www/my-drupal-site/web"
+      }
+    }
+  ]
+}
 ```
