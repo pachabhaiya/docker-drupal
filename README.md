@@ -108,7 +108,7 @@ $ docker-compose down
       "name": "Listen for XDebug",
       "type": "php",
       "request": "launch",
-      "port": 9000,
+      //   "port": 9000,
       "log": true,
       "pathMappings": {
         "/var/www/my-drupal-site/web": "${workspaceFolder}/www/my-drupal-site/web"
