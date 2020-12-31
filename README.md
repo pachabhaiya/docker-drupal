@@ -117,3 +117,8 @@ $ docker-compose down
   ]
 }
 ```
+
+```bash
+$ docker cp db-dump/filmykhabar_local_db-20200913-2.sql.gz docker-filmykhabar_db_1:/tmp
+$ docker exec -it docker-filmykhabar_db_1 sh -c "gunzip < /tmp/filmykhabar_local_db-20200913-2.sql.gz | mysql -u drupaluser -p filmykhabar_db"
+```
