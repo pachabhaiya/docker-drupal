@@ -43,6 +43,15 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
 
+  node:
+    build:
+      context: ./container/node
+      dockerfile: Dockerfile
+    ports:
+      - "3000:8080"
+    volumes:
+      - ./www/react:/home/node/react-app
+
   # adminer:
   #   image: adminer
   #   container_name: ${ADMINER_CONTAINER_NAME}
