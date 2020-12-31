@@ -37,6 +37,8 @@ services:
       - "3306:3306"
     volumes:
       - ./data/db:/var/lib/mysql
+      - ./db-dump:/tmp
+      - ./container/mariadb/conf/custom.cnf:/etc/mysql/conf.d/custom.cnf
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
