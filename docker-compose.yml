@@ -7,12 +7,12 @@ services:
       dockerfile: Dockerfile
       args:
         - SERVER_NAME=${SERVER_NAME}
-        - DOCROOT=/var/www/${PROJECT_FOLDER_NAME}/web
+        - DOCROOT=/var/www/${DRUPAL_PROJECT_FOLDER}/web
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
+      - ./www/${DRUPAL_PROJECT_FOLDER}:/var/www/${DRUPAL_PROJECT_FOLDER}
     links:
       - php
       - db
@@ -26,8 +26,8 @@ services:
         - PHP_TAG=${PHP_TAG}
         - DRUSH_VERSION=${DRUSH_VERSION}
     volumes:
-      - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
-    working_dir: /var/www/${PROJECT_FOLDER_NAME}
+      - ./www/${DRUPAL_PROJECT_FOLDER}:/var/www/${DRUPAL_PROJECT_FOLDER}
+    working_dir: /var/www/${DRUPAL_PROJECT_FOLDER}
 
   db:
     build:
@@ -50,7 +50,7 @@ services:
     ports:
       - "3000:8080"
     volumes:
-      - ./www/react:/home/node/react-app
+      - ./www/${REACT_PROJECT_FOLDER}:/home/node/${REACT_PROJECT_FOLDER}
 
   # adminer:
   #   image: adminer
@@ -80,7 +80,7 @@ services:
   #   ports:
   #     - "${WEB_PORT}:80"
   #   volumes:
-  #     - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
+  #     - ./www/${DRUPAL_PROJECT_FOLDER}:/var/www/${DRUPAL_PROJECT_FOLDER}
   #     - ./container/web/conf/php/${PHP_VERSION}/etc/php.ini:/etc/php.ini
 
   # varnish:
