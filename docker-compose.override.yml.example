@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  node:
+    build:
+      context: ./www/${REACT_PROJECT_FOLDER}
+      dockerfile: Dockerfile
+      args:
+        - REACT_PROJECT_FOLDER=${REACT_PROJECT_FOLDER}
+    ports:
+      - "${NODE_PORT:-3000}:8080"
+    volumes:
+      - ./www/${REACT_PROJECT_FOLDER}:/home/node/${REACT_PROJECT_FOLDER}

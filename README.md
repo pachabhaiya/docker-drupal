@@ -1,75 +1,37 @@
 # Docker for Drupal
 
-Local Development Environment for Drupal 7/8 site using Docker.
+Local Development Environment for Drupal/React.
 
 | Container | Description |
-| :--- | :--- |
-| web | PHP-FPM 5.6/7.2 and Apache 2.4<br />Base Image = CentOS 7 |
-| db | MariaDB 5/10 - Official repository |
-| adminer | Adminer - Official repository |
-| varnish | Varnish 4.1<br />Base Image = CentOS 7 |
-| nginx | SSL termination proxy |
-| solr | Apache Solr 4.10.4 |
+| :-------- | :---------- |
+| php       |             |
+| nginx     |             |
+| db        |             |
+| adminer   |             |
+| node      |             |
 
 ---
 
-## 1. Clone [`drupal-drupal`](https://github.com/pachabhaiya/docker-drupal) repository
+## 1. Clone [`docker-drupal`](https://github.com/pachabhaiya/docker-drupal) repository
+
 ```bash
-$ git clone https://github.com/pachabhaiya/docker-drupal.git
+$ git clone --branch debian https://github.com/pachabhaiya/docker-drupal.git
 $ cd docker-drupal
 ```
 
 ## 2. Create environment variables for your project
 
 ```bash
-$ cp .env.default .env
+$ cp .env.example .env
 ```
 
 Change the value of environment variables as needed.
-```
-MYSQL_DATABASE=drupal_db
-MYSQL_USER=drupaluser
-MYSQL_PASSWORD=pa55w0Rd
-
-PHP_VERSION=7.2
-MARIADB_VERSION=10
-SOLR_VERSION=4
-
-WEB_PORT=8080
-VARNISH_PORT=80
-NGINX_PORT=443
-DB_PORT=3306
-ADMINER_PORT=8888
-SOLR_PORT=8983
-
-WEB_CONTAINER_NAME=web
-VARNISH_CONTAINER_NAME=varnish
-NGINX_CONTAINER_NAME=nginx
-DB_CONTAINER_NAME=db
-ADMINER_CONTAINER_NAME=adminer
-SOLR_CONTAINER_NAME=solr
-
-SERVER_NAME=www.drupal.local
-
-# Project folder name.
-PROJECT_FOLDER_NAME=my-drupal-site
-
-# Path to Drupal code base relative to './www' folder.
-DOCROOT_PATH=my-drupal-site/web
-
-# Path to working directory relative to './www' folder.
-WORKDIR=my-drupal-site
-```
-
-Supported PHP versions: 5.6 and 7.2
-
-Supported MariaDB versions: 5 and 10
 
 ## 3. Start Docker containers
 
 ```bash
 # Create and start containers.
-# -d = Detached mode (run in background)
+# -d = Detached mode (runs in background)
 # --build = Build images before starting containers
 $ docker-compose up -d --build
 
@@ -83,12 +45,88 @@ $ docker container ls
 
 ## 4. Test page
 
-http://www.drupal.local
-
 https://www.drupal.local
 
-## 5. Stop Docker containers
+---
+
+## Xdebug configuration for VS Code
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Listen for XDebug",
+      "type": "php",
+      "request": "launch",
+      "port": 9000,
+      "log": true,
+      "pathMappings": {
+        "/var/www/drupal-site/web": "${workspaceFolder}/www/drupal-site/web"
+      }
+    }
+  ]
+}
+```
+
+## Import database
+
+1. Copy the db dump file (e.g., `db-dump.sql.gz`) to ./data/tmp folder.
+
+2. Run this command to import the sql dump file to database
+
+   ```bash
+   $ docker-compose exec db sh -c "gunzip < /tmp/db-dump.sql.gz | mysql -u drupaluser -p drupal_db"
+   ```
+
+3. Verify the imported database tables
+
+   ```bash
+   $ docker-compose exec db sh -c "mysql -u drupaluser -p drupal_db"
+   Enter password: pa55w0Rd
+
+   MariaDB [drupal_db]> show databases;
+
+   MariaDB [drupal_db]> use drupal_db
+   Database changed
+
+   MariaDB [drupal_db]> show tables;
+   ```
+
+## Export database
+
+Using mysqldmp
 
 ```bash
-$ docker-compose down
+$ docker-compose exec db sh -c "mysqldump -u drupaluser -p drupal_db > /tmp/export.sql"
+```
+
+Using Drush
+
+```bash
+$ docker-compose exec php sh -c "drush sql-dump | gzip -9 > /tmp/export.sql.gz"
+```
+
+Using Drupal Console
+
+```bash
+$ docker-compose exec php sh -c "drupal dbdu --gz --file=/tmp/export.sql.gz"
+```
+
+## Bash helpers
+
+```bash
+$ source ./scripts/bash-helpers.sh
+
+# docker-compose up -d --build
+$ dcup
+
+# docker-compose down
+$ dcdown
+
+# Drush
+$ dcdrush cr
+
+# Drupal Console
+$ dcdrupal cr
 ```

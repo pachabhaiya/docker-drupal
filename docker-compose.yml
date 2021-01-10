@@ -1,56 +1,42 @@
-version: '3'
+version: "3"
 
 services:
-  web:
-    build:
-      context: ./container/web
-      dockerfile: Dockerfile.php-${PHP_VERSION}
-      args:
-        - DOCROOT_FOLDER=/var/www/${DOCROOT_PATH}
-        - WORKDIR=/var/www/${WORKDIR}
-    restart: always
-    container_name: ${WEB_CONTAINER_NAME}
-    ports:
-      - "${WEB_PORT}:80"
-    volumes:
-      - ./www/${PROJECT_FOLDER_NAME}:/var/www/${PROJECT_FOLDER_NAME}
-      - ./container/web/conf/php/${PHP_VERSION}/etc/php.ini:/etc/php.ini
-
-  varnish:
-    build:
-      context: ./container/varnish
-      dockerfile: Dockerfile
-    container_name: ${VARNISH_CONTAINER_NAME}
-    restart: always
-    ports:
-      - "${VARNISH_PORT}:80"
-    volumes:
-      - ./container/varnish/conf/varnish.params:/etc/varnish/varnish.params
-      - ./container/varnish/conf/default.vcl:/etc/varnish/default.vcl
-
   nginx:
     build:
-      context: ./container/nginx
+      context: ./containers/nginx
+      dockerfile: Dockerfile
       args:
         - SERVER_NAME=${SERVER_NAME}
-    container_name: ${NGINX_CONTAINER_NAME}
-    restart: always
+        - DOCROOT=/var/www/${DRUPAL_PROJECT_FOLDER}/web
     ports:
       - "${NGINX_PORT}:443"
+    volumes:
+      - ./www/${DRUPAL_PROJECT_FOLDER}:/var/www/${DRUPAL_PROJECT_FOLDER}
+    links:
+      - php
+      - db
     command: /bin/bash -c "nginx -g 'daemon off;'"
+
+  php:
+    build:
+      context: ./containers/php
+      dockerfile: Dockerfile
+      args:
+        - PHP_TAG=${PHP_TAG:-7.4.14-fpm-buster}
+    volumes:
+      - ./www/${DRUPAL_PROJECT_FOLDER}:/var/www/${DRUPAL_PROJECT_FOLDER}
+      - ./data/tmp:/tmp
+    working_dir: /var/www/${DRUPAL_PROJECT_FOLDER}
 
   db:
     build:
-      context: ./container/db
-      dockerfile: Dockerfile.${MARIADB_VERSION}
-    container_name: ${DB_CONTAINER_NAME}
-    restart: always
+      context: ./containers/mariadb
+      dockerfile: Dockerfile
     ports:
-        - "${DB_PORT}:3306"
+      - "${DB_PORT}:3306"
     volumes:
       - ./data/db:/var/lib/mysql
-      - ./db-dump:/tmp
-      - ./container/db/conf/custom.cnf:/etc/mysql/conf.d/custom.cnf
+      - ./data/tmp:/tmp
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -59,16 +45,6 @@ services:
 
   adminer:
     image: adminer
-    container_name: ${ADMINER_CONTAINER_NAME}
     restart: always
     ports:
       - "${ADMINER_PORT}:8080"
-
-  # solr:
-  #   build:
-  #     context: ./container/solr/${SOLR_VERSION}
-  #     dockerfile: Dockerfile
-  #   container_name: ${SOLR_CONTAINER_NAME}
-  #   restart: always
-  #   ports:
-  #     - "${SOLR_PORT}:8983"
