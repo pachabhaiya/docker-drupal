@@ -43,12 +43,10 @@ RUN chmod a+x /usr/local/bin/composer.phar
 RUN ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
 
 # Drush
-RUN git clone https://github.com/drush-ops/drush.git /usr/local/src/drush \
-  && cd /usr/local/src/drush \
-  && git checkout 10.3.6 \
-  && ln -s /usr/local/src/drush/drush /usr/bin/drush \
-  && composer install \
-  && drush --version
+# https://github.com/drush-ops/drush/blob/10.x/docs/install.md
+RUN wget -O drush.phar https://github.com/drush-ops/drush-launcher/releases/latest/download/drush.phar \
+  && chmod +x drush.phar \
+  && mv drush.phar /usr/local/bin/drush
 
 # Install Drupal Console Launcher
 RUN curl https://drupalconsole.com/installer -L -o drupal.phar
