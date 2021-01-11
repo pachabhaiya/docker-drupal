@@ -25,7 +25,7 @@ services:
         - PHP_TAG=${PHP_TAG:-7.4.14-fpm-buster}
     volumes:
       - ./www/${DRUPAL_PROJECT_FOLDER}:/var/www/${DRUPAL_PROJECT_FOLDER}
-      - ./data/tmp:/tmp
+      - ./data/tmp/php:/tmp
     working_dir: /var/www/${DRUPAL_PROJECT_FOLDER}
 
   db:
@@ -36,7 +36,7 @@ services:
       - "${DB_PORT}:3306"
     volumes:
       - ./data/db:/var/lib/mysql
-      - ./data/tmp:/tmp
+      - ./data/tmp/db:/tmp
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}

@@ -9,8 +9,10 @@
 !/data/db/.gitkeep
 
 # Ignore temporary files.
-/data/tmp/*
-!/data/tmp/.gitkeep
+/data/tmp/php/*
+!/data/tmp/php/.gitkeep
+/data/tmp/db/*
+!/data/tmp/db/.gitkeep
 
 # Ignore project files
 /www/*
