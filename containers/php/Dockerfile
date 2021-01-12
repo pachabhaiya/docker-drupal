@@ -38,7 +38,7 @@ COPY conf.d/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-x
 # Composer
 # RUN wget -O composer-setup.php https://getcomposer.org/installer \
 #   && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-RUN wget -P /usr/local/bin https://getcomposer.org/download/1.8.4/composer.phar
+RUN wget -P /usr/local/bin https://getcomposer.org/download/1.10.19/composer.phar
 RUN chmod a+x /usr/local/bin/composer.phar
 RUN ln -s /usr/local/bin/composer.phar /usr/local/bin/composer
 
