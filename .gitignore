@@ -21,5 +21,3 @@
 
 # Ignore override file.
 docker-compose.override.yml
-
-.vscode
